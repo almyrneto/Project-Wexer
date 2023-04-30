@@ -1,51 +1,99 @@
+import { FormLabel } from '@mui/material'
+import { Modal } from '../modalGlobal'
 import {
-  ClosedButton,
-  Div,
+  ButtonCancel,
+  ButtonSend,
+  Components,
+  ContainerFooter,
+  Input,
   InputContainer,
-  ModalContent,
-  ModalOutside,
+  InputFooter,
   NumberIcon,
   SecondTitle,
   SubContainer,
-  Title
-} from './styled'
+  Text,
+  TextArea
+} from '../styled'
 
 type Props = {
   isOpen: boolean
   onClose: () => void
 }
 
-export const Modal = ({ isOpen, onClose }: Props) => (
-  <ModalOutside isOpen={isOpen}>
-    <ModalContent>
-      <ClosedButton onClick={onClose}>&times;</ClosedButton>
-      <Title>Nova Sessão</Title>
+export const ModalSection = ({ isOpen, onClose }: Props) => {
+  return (
+    <Modal isOpen={isOpen} onClose={onClose} title="Nova Sessão">
       <div>
-        <Div>
+        <Components>
           <NumberIcon>1</NumberIcon>
           <SecondTitle>Dados Gerais</SecondTitle>
-        </Div>
-        <Div>
+        </Components>
+        <Components>
           <InputContainer>
             <label>Data*</label>
-            <input id="date" />
+            <Input type="date" />
           </InputContainer>
           <InputContainer>
             <label>Hora de inicio*</label>
-            <input />
+            <Input type="time" />
           </InputContainer>
           <InputContainer>
             <label>Hora fim</label>
-            <input />
+            <Input type="time" />
           </InputContainer>
-        </Div>
+        </Components>
       </div>
       <SubContainer>
-        <Div>
+        <Components>
           <NumberIcon>2</NumberIcon>
           <SecondTitle>Sessão</SecondTitle>
-        </Div>
+        </Components>
+        <Components>
+          <InputContainer>
+            <label>Titulo*</label>
+            <Input type="text" placeholder="Digite" />
+            <label>Resumo da sessão*</label>
+            <TextArea placeholder="text" />
+          </InputContainer>
+        </Components>
+        <Components>
+          <NumberIcon>3</NumberIcon>
+          <SecondTitle>Pagamento</SecondTitle>
+        </Components>
+        <Components>
+          <InputContainer>
+            <label>Valor</label>
+            <input type="number" placeholder="0,00" />
+          </InputContainer>
+          <InputContainer>
+            <FormLabel>Forma de pagamento</FormLabel>
+            <select>
+              <option>PIX</option>
+              <option>DINHEIRO</option>
+              <option>DEBITO</option>
+              <option>CRÉDITO</option>
+            </select>
+          </InputContainer>
+          <InputContainer>
+            <FormLabel>Status</FormLabel>
+            <label>
+              <input type="radio" />
+              Pago
+            </label>
+            <label>
+              <input type="radio" />
+              Não pago
+            </label>
+          </InputContainer>
+        </Components>
+        <ContainerFooter>
+          <Text>*Campos Obrigátorios</Text>
+          <InputFooter>
+            <ButtonCancel onClick={onClose}>Cancelar</ButtonCancel>
+            <ButtonSend>criar</ButtonSend>
+          </InputFooter>
+        </ContainerFooter>
       </SubContainer>
-    </ModalContent>
-  </ModalOutside>
-)
+    </Modal>
+  )
+}

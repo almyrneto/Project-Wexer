@@ -8,7 +8,9 @@ import {
   ButtonCancel,
   Text,
   ContainerFooter,
-  TextArea
+  Card,
+  TitleAvaliation,
+  ContentCard
 } from '@/components/modal/styled'
 import { Modal } from '../modalGlobal'
 
@@ -16,10 +18,11 @@ type Props = {
   isOpen: boolean
   onClose: () => void
   title: string
+  text: string
 }
 
-export const ModalRelavantFacts = ({ isOpen, onClose, title }: Props) => (
-  <Modal isOpen={isOpen} onClose={onClose} title="Novo Fato Relevante">
+export const ModalNewAvaliation = ({ isOpen, onClose, title, text }: Props) => (
+  <Modal isOpen={isOpen} onClose={onClose} title="Nova Avaliação Psicológica">
     <Title>{title}</Title>
     <div>
       <Components>
@@ -27,22 +30,16 @@ export const ModalRelavantFacts = ({ isOpen, onClose, title }: Props) => (
           <label>Data*</label>
           <Input type="date" />
         </InputContainer>
-        <InputContainer>
-          <label>Titulo*</label>
-          <Input type="text" placeholder="digite" />
-        </InputContainer>
       </Components>
-      <Components>
-        <InputContainer>
-          <label>Descrição*</label>
-          <TextArea placeholder="Digite" />
-        </InputContainer>
-      </Components>
+      <Card>
+        <TitleAvaliation>Atenção!</TitleAvaliation>
+        <ContentCard>{text}</ContentCard>
+      </Card>
       <ContainerFooter>
         <Text>*Campos Obrigátorios</Text>
         <InputFooter>
           <ButtonCancel onClick={onClose}>Cancelar</ButtonCancel>
-          <ButtonSend>criar</ButtonSend>
+          <ButtonSend>Prosseguir</ButtonSend>
         </InputFooter>
       </ContainerFooter>
     </div>

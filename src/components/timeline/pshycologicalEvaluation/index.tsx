@@ -1,23 +1,29 @@
 import Plus from '@/assets/icons/Plus'
-import { Card, Title, Header, PencilButton } from '@/assets/styles/global'
-import { Date } from '@/components/timeline/styled'
+import { Title, Header } from '@/assets/styles/global'
+import { Card, Date, PlusButton } from '@/components/timeline/styled'
+import { Icon, SideBar } from './styled'
+import Document from '@/assets/icons/Document'
 
 type Props = {
   title: string
   date: string
-  text: string
 }
 
 export const PshycologicalEvaluation = ({ title, date }: Props) => {
   return (
-    <Card>
-      <Header>
-        <Title>{title}</Title>
-        <PencilButton>
-          <Plus />
-        </PencilButton>
-      </Header>
-      <Date>{date}</Date>
-    </Card>
+    <SideBar>
+      <Card>
+        <Icon>
+          <Document />
+        </Icon>
+        <Header>
+          <Title>{title}</Title>
+          <PlusButton>
+            <Plus />
+          </PlusButton>
+        </Header>
+        <Date>{date}</Date>
+      </Card>
+    </SideBar>
   )
 }

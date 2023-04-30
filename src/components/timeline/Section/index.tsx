@@ -1,11 +1,33 @@
-import { Card } from '@/assets/styles/global'
+import Health from '@/assets/icons/Health'
+import { Card, Date, PlusButton } from '../styled'
+import { Icon, SideBar } from './styled'
+import { Header, Title } from '@/assets/styles/global'
+import Plus from '@/assets/icons/Plus'
 
-export const Section = () => {
+type Props = {
+  title: string
+  date: string
+  text: string
+}
+
+export const Section = ({ title, date, text }: Props) => {
   return (
-    <Card>
-      <div>
-        <p>Sessão 01</p>
-      </div>
-    </Card>
+    <SideBar>
+      <Card>
+        <Icon>
+          <Health />
+        </Icon>
+        <Header>
+          <Title>{title}</Title>
+          <PlusButton>
+            <Plus />
+          </PlusButton>
+        </Header>
+        <>
+          <Date>{date}</Date>
+          <p>{text}</p>
+        </>
+      </Card>
+    </SideBar>
   )
 }
