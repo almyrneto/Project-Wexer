@@ -10,6 +10,7 @@ export const Router = () => {
       <RouterProvider
         router={createBrowserRouter([
           {
+            index: true,
             path: '/login',
             element: <Login />
           },
@@ -18,7 +19,6 @@ export const Router = () => {
             element: <Layout />,
             children: [
               {
-                index: true,
                 element: <App />
               },
               {
