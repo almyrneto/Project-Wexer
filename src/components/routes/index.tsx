@@ -14,7 +14,7 @@ export const Router = () => {
             element: <Login />
           },
           {
-            path: '/',
+            path: '/timeline',
             element: <Layout />,
             children: [
               {
