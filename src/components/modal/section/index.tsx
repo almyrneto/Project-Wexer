@@ -14,6 +14,10 @@ import {
   Text,
   TextArea
 } from '../styled'
+import { useState } from 'react'
+import { api } from '../../services/api'
+import { useNavigate } from 'react-router-dom'
+import { ID_TIMELINE } from '@/components/utils/constants'
 
 type Props = {
   isOpen: boolean
@@ -21,6 +25,31 @@ type Props = {
 }
 
 export const ModalSection = ({ isOpen, onClose }: Props) => {
+  const [title, setTitle] = useState('')
+  const [data, setData] = useState('')
+  const [inicialTime, setInicialTime] = useState('')
+  const [endTime, setEndTime] = useState('')
+  const [summary, setSummary] = useState('')
+  const navigate = useNavigate()
+
+  const newSection = async (title: string, summary: string) => {
+    const dados = await api.post('/occurrence', {
+      title: title,
+      content: summary,
+      type: 'session',
+      timelineId: ID_TIMELINE
+    })
+
+    if (dados.status === 200) {
+      api.defaults.headers.Authorization = dados.data.token
+      return dados.data.token
+    }
+    if (dados.status === 401) {
+      throw new Error('Arquivo invalido')
+    }
+    throw new Error('servidor nao esta respondendo, tente novamente mais tarde!')
+  }
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Nova Sessão">
       <div>
@@ -31,15 +60,15 @@ export const ModalSection = ({ isOpen, onClose }: Props) => {
         <Components>
           <InputContainer>
             <label>Data*</label>
-            <Input type="date" />
+            <Input type="date" value={data} onChange={e => setData(e.target.value)} />
           </InputContainer>
           <InputContainer>
             <label>Hora de inicio*</label>
-            <Input type="time" />
+            <Input type="time" value={inicialTime} onChange={e => setInicialTime(e.target.value)} />
           </InputContainer>
           <InputContainer>
             <label>Hora fim</label>
-            <Input type="time" />
+            <Input type="time" value={endTime} onChange={e => setEndTime(e.target.value)} />
           </InputContainer>
         </Components>
       </div>
@@ -51,9 +80,9 @@ export const ModalSection = ({ isOpen, onClose }: Props) => {
         <Components>
           <InputContainer>
             <label>Titulo*</label>
-            <Input type="text" placeholder="Digite" />
+            <Input type="text" placeholder="Digite" value={title} onChange={e => setTitle(e.target.value)} />
             <label>Resumo da sessão*</label>
-            <TextArea placeholder="text" />
+            <TextArea placeholder="text" value={summary} onChange={e => setSummary(e.target.value)} />
           </InputContainer>
         </Components>
         <Components>
@@ -90,7 +119,18 @@ export const ModalSection = ({ isOpen, onClose }: Props) => {
           <Text>*Campos Obrigátorios</Text>
           <InputFooter>
             <ButtonCancel onClick={onClose}>Cancelar</ButtonCancel>
-            <ButtonSend>criar</ButtonSend>
+            <ButtonSend
+              onClick={async () => {
+                try {
+                  await newSection(title, summary)
+                  navigate('/')
+                } catch (error) {
+                  alert((error as any).message)
+                }
+              }}
+            >
+              criar
+            </ButtonSend>
           </InputFooter>
         </ContainerFooter>
       </SubContainer>

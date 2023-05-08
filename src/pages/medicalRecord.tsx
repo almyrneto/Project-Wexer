@@ -15,13 +15,28 @@ import { PshycologicalEvaluation } from '@/components/timeline/pshycologicalEval
 import { useEffect, useState } from 'react'
 import { patientService } from '@/components/services/patient'
 import { PatientProps } from '@/components/types/patient.types'
+import { getTimeLine } from '@/components/services/timeline'
+import { TimelineProps } from '@/components/types/timeline.types'
 
 export const MedicalRecord = () => {
-  // const [timeline, setTimeline] = useState()
+  const [timeline, setTimeline] = useState<TimelineProps>()
   const [data, setData] = useState<PatientProps>()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const getTimeline = async () => {
+      setLoading(true)
+      try {
+        const response = await getTimeLine()
+        setTimeline(response.data)
+        setLoading(false)
+      } catch (error) {
+        alert('ocorreu um erro no servidor')
+        setLoading(false)
+      }
+    }
+    getTimeline()
+
     const getPatient = async () => {
       setLoading(true)
       try {
@@ -42,6 +57,13 @@ export const MedicalRecord = () => {
   if (!data) {
     return <p>ocorreu um erro, tente mais tarde!</p>
   }
+  if (loading) {
+    return <p>carregando</p>
+  }
+  if (!timeline) {
+    return <p>ocorreu um erro, tente mais tarde!</p>
+  }
+
   return (
     <div>
       <div>
@@ -64,14 +86,33 @@ export const MedicalRecord = () => {
         </div>
         <div>
           <ParentContainer date="18/02/2022" />
-          <Section
-            title="Sessão 02"
-            date="22 de setembro de 2022"
-            text="A paciente relatou que estava tendo dificuldades com sua família e amigos próximos, pois demostra ansiedade diante de fatos cotidianos, resultando em reações de raiva com as pessoas que estão próximas a ela. Além disso, relatou brigas recentes com seus pais e namorado e, após a briga, ficou mal diante... Ver mais"
-          />
-          <RelevantFact title="Fato Relevante" date="15 de setembro de 2022" text="Cliente não compareceu." />
-          <Annex title="Documentos Importante" date="10 de setembro de 2022" />
-          <PshycologicalEvaluation title="Avaliação Psicológica" date="01 de setembro de 2022" />
+          {timeline.timeline.occurrences.map(occurrence => {
+            if (occurrence.type === 'session') {
+              return (
+                <Section
+                  key={occurrence._id}
+                  title={occurrence.title}
+                  date={occurrence.createdOn}
+                  text={occurrence.content}
+                />
+              )
+            } else if (occurrence.type === 'relevant_fact') {
+              return (
+                <RelevantFact
+                  key={occurrence._id}
+                  title={occurrence.title}
+                  date={occurrence.createdOn}
+                  text={occurrence.content}
+                />
+              )
+            } else if (occurrence.type === 'attachment') {
+              return <Annex key={occurrence._id} title={occurrence.title} date={occurrence.createdOn} />
+            } else if (occurrence.type === 'assessment') {
+              return (
+                <PshycologicalEvaluation key={occurrence._id} title={occurrence.title} date={occurrence.createdOn} />
+              )
+            }
+          })}
         </div>
       </Grid>
     </div>
