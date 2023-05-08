@@ -11,7 +11,6 @@ export const Router = () => {
         router={createBrowserRouter([
           {
             index: true,
-            path: '/login',
             element: <Login />
           },
           {
@@ -20,10 +19,6 @@ export const Router = () => {
             children: [
               {
                 element: <App />
-              },
-              {
-                path: 'teste',
-                element: <h1>teste</h1>
               }
             ]
           }
