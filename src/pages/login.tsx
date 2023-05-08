@@ -17,7 +17,7 @@ export const Login = () => {
         onClick={async () => {
           try {
             await postLogin(email, password)
-            navigate('/timeline')
+            navigate('/')
           } catch (error) {
             alert((error as any).message)
           }
