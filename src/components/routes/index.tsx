@@ -10,20 +10,16 @@ export const Router = () => {
       <RouterProvider
         router={createBrowserRouter([
           {
-            path: '/login',
+            index: true,
             element: <Login />
           },
           {
-            path: '/',
+            path: '/timeline',
             element: <Layout />,
             children: [
               {
                 index: true,
                 element: <App />
-              },
-              {
-                path: 'teste',
-                element: <h1>teste</h1>
               }
             ]
           }
